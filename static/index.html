@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reiter der Schwarzen Sonne</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <aside class="side_panel">
+        <img class="side_image" src="/static/images/sidebar_image_top.svg" alt="Sidebar ornament top" />
+        <div class="side_content">
+          <div class="title_block">
+            <h1>Reiter der Schwarzen Sonne</h1>
+          </div>
+
+          <span id="section_id" class="section_text">Sektion 0</span>
+
+          <div class="side_actions">
+            <button id="btn_overview" onclick="open_overview()">Charakter Übersicht</button>
+            <button id="btn_save" onclick="save()">Speichern</button>
+            <button id="btn_load" onclick="load()">Laden</button>
+            <button id="btn_restart" onclick="restart()">Neu Starten</button>
+          </div>
+        </div>
+
+        <img class="side_image" src="/static/images/sidebar_image_bottom.svg" alt="Sidebar ornament bottom" />
+      </aside>
+
+      <main class="main_panel">
+        <section class="story_panel">
+          <div id="story_text" class="story_text">Welcome To The 'Reiter der Schwarzen Sonne'!<br><br>Author: Swen Harder<br>Artist: Fufu Frauenwahl<br>Programmer: Danil Kryvonosov<br>
+          </div>
+        </section>
+
+        <section class="action_panel" id="action_panel">
+          <div id="choices" onclick="load_section(1)" class="choice_button">
+            <button>Start the game</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/main.js"></script>
+  </body>
+</html>
