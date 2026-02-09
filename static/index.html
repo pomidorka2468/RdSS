@@ -18,9 +18,9 @@
           <span id="section_id" class="section_text">Sektion 0</span>
 
           <div class="side_actions">
-            <button id="btn_overview" onclick="open_overview()">Charakter Übersicht</button>
-            <button id="btn_save" onclick="save()">Speichern</button>
-            <button id="btn_load" onclick="load()">Laden</button>
+            <button id="btn_overview" onclick="showStats()">Charakter Übersicht</button>
+            <button id="btn_save" onclick="save()">Speichern (WIP)</button>
+            <button id="btn_load" onclick="load()">Laden (WIP)</button>
             <button id="btn_restart" onclick="restart()">Neu Starten</button>
           </div>
         </div>
@@ -29,14 +29,241 @@
       </aside>
 
       <main class="main_panel">
-        <section class="story_panel">
-          <div id="story_text" class="story_text">Welcome To The 'Reiter der Schwarzen Sonne'!<br><br>Author: Swen Harder<br>Artist: Fufu Frauenwahl<br>Programmer: Danil Kryvonosov<br>
+        <section id="story_panel" class="story_panel">
+          <div id="story_text" class="story_text">
+            ---
           </div>
+          <section id="story_actions" class="action_panel">
+            ---
+          </section>
         </section>
 
-        <section class="action_panel" id="action_panel">
-          <div id="choices" onclick="load_section(1)" class="choice_button">
-            <button>Start the game</button>
+        <section id="stats_panel" class="stats_panel hidden">
+          <!-- Character Overview (place ALL of this inside #stats_panel) -->
+          <div class="sheet" id="sheet_root">
+            <header class="sheet_header">
+              <div class="sheet_title">
+                <h2 id="sheet_title">ABENTEUERBLATT</h2>
+                <div class="sheet_subtitle">
+                  <span class="label">akt. Kapitel/Sektion</span>
+                  <span class="value" id="current_section">Sektion 0</span>
+                </div>
+              </div>
+            </header>
+
+            <section class="sheet_top">
+              <div class="card attr_card">
+                <div class="attr_grid">
+                  <div class="attr_block">
+                    <div class="attr_head">
+                      <span class="attr_name">Stärke</span>
+                      <span class="attr_value" id="strength_value">5</span>
+                    </div>
+                    <div class="track compact" id="strength_track" aria-label="Stärke Track">
+                      <span class="tick tick--on" id="str_1" aria-label="Stärke 1"></span>
+                      <span class="tick tick--on" id="str_2" aria-label="Stärke 2"></span>
+                      <span class="tick tick--on" id="str_3" aria-label="Stärke 3"></span>
+                      <span class="tick tick--on" id="str_4" aria-label="Stärke 4"></span>
+                      <span class="tick tick--on" id="str_5" aria-label="Stärke 5"></span>
+                      <span class="tick" id="str_6" aria-label="Stärke 6"></span>
+                      <span class="tick" id="str_7" aria-label="Stärke 7"></span>
+                      <span class="tick" id="str_8" aria-label="Stärke 8"></span>
+                      <span class="tick" id="str_9" aria-label="Stärke 9"></span>
+                      <span class="tick" id="str_10" aria-label="Stärke 10"></span>
+                      <span class="tick" id="str_11" aria-label="Stärke 11"></span>
+                      <span class="tick" id="str_12" aria-label="Stärke 12"></span>
+                      <span class="tick" id="str_13" aria-label="Stärke 13"></span>
+                      <span class="tick" id="str_14" aria-label="Stärke 14"></span>
+                      <span class="tick" id="str_15" aria-label="Stärke 15"></span>
+                    </div>
+                  </div>
+
+                  <div class="attr_block">
+                    <div class="attr_head">
+                      <span class="attr_name">Geschick</span>
+                      <span class="attr_value" id="dex_value">5</span>
+                    </div>
+                    <div class="track compact" id="dex_track" aria-label="Geschick Track">
+                      <span class="tick tick--on" id="dex_1" aria-label="Geschick 1"></span>
+                      <span class="tick tick--on" id="dex_2" aria-label="Geschick 2"></span>
+                      <span class="tick tick--on" id="dex_3" aria-label="Geschick 3"></span>
+                      <span class="tick tick--on" id="dex_4" aria-label="Geschick 4"></span>
+                      <span class="tick tick--on" id="dex_5" aria-label="Geschick 5"></span>
+                      <span class="tick" id="dex_6" aria-label="Geschick 6"></span>
+                      <span class="tick" id="dex_7" aria-label="Geschick 7"></span>
+                      <span class="tick" id="dex_8" aria-label="Geschick 8"></span>
+                      <span class="tick" id="dex_9" aria-label="Geschick 9"></span>
+                      <span class="tick" id="dex_10" aria-label="Geschick 10"></span>
+                      <span class="tick" id="dex_11" aria-label="Geschick 11"></span>
+                      <span class="tick" id="dex_12" aria-label="Geschick 12"></span>
+                      <span class="tick" id="dex_13" aria-label="Geschick 13"></span>
+                      <span class="tick" id="dex_14" aria-label="Geschick 14"></span>
+                      <span class="tick" id="dex_15" aria-label="Geschick 15"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="status_block">
+                  <div class="status_head">
+                    <img class="icon" src="/static/icons/heart.svg" alt="" aria-hidden="true" />
+                    <span class="status_title">Vitalität</span>
+                  </div>
+
+                  <div class="status_meter" id="vitality_meter" aria-label="Vitalität Status (Anzeige)">
+                    <span class="status_step status_step--active" id="vit_fit">fit</span>
+                    <span class="status_step" id="vit_normal">normal</span>
+                    <span class="status_step" id="vit_angeschlagen">angeschlagen</span>
+                    <span class="status_step" id="vit_verletzt">verletzt</span>
+                    <span class="status_step" id="vit_kritisch">kritisch</span>
+                    <span class="status_step" id="vit_tot">tot</span>
+                  </div>
+
+                  <div class="penalties" aria-label="Abzüge (Anzeige)">
+                    <span class="penalty_chip" id="penalty_chip_minus_1">
+                      <img class="icon" src="/static/icons/skull.svg" alt="" aria-hidden="true" />
+                      <span class="penalty_text" id="penalty_text_minus_1">-1</span>
+                    </span>
+                    <span class="penalty_chip" id="penalty_chip_minus_2">
+                      <img class="icon" src="/static/icons/skull.svg" alt="" aria-hidden="true" />
+                      <span class="penalty_text" id="penalty_text_minus_2">-2</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card armor_card">
+                <div class="card_head">
+                  <div class="card_title">Kleidung</div>
+                  <div class="card_hint">
+                    <img class="icon" src="/static/icons/shield.svg" alt="" aria-hidden="true" />
+                    Schutzbonus (Anzeige)
+                  </div>
+                </div>
+
+                <div class="armor_grid" aria-label="Kleidung und Schutzbonus">
+                  <div class="armor_item">
+                    <span class="armor_label">Kopf</span>
+                    <span id="armor_head" class="pill">0</span>
+                  </div>
+                  <div class="armor_item">
+                    <span class="armor_label">Rumpf</span>
+                    <span id="armor_torso" class="pill">0</span>
+                  </div>
+                  <div class="armor_item">
+                    <span class="armor_label">Arme</span>
+                    <span id="armor_arms" class="pill">0</span>
+                  </div>
+                  <div class="armor_item">
+                    <span class="armor_label">Beine</span>
+                    <span id="armor_legs" class="pill">0</span>
+                  </div>
+                  <div class="armor_item">
+                    <span class="armor_label">Füße</span>
+                    <span id="armor_feet" class="pill">0</span>
+                  </div>
+                  <div class="armor_item">
+                    <span class="armor_label">Umhang/Tarnung</span>
+                    <span id="armor_cloak" class="pill">0</span>
+                  </div>
+                </div>
+
+                <div class="armor_totals">
+                  <div class="total_row">
+                    <span class="total_label">Gesamter Schutzbonus</span>
+                    <span id="armor_total" class="pill">0</span>
+                  </div>
+                  <div class="total_row">
+                    <span class="total_label">Verteidigung</span>
+                    <span id="defense_value" class="pill">5</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="sheet_mid">
+              <div class="card items_card">
+                <div class="card_head">
+                  <div class="card_title">Utensilien</div>
+                  <div class="card_hint">Anzeige (max. 6)</div>
+                </div>
+
+                <div class="items_grid" aria-label="Utensilien Liste">
+                  <span id="item_1" class="readonly_text">—</span>
+                  <span id="item_4" class="readonly_text">—</span>
+                  <span id="item_2" class="readonly_text">—</span>
+                  <span id="item_5" class="readonly_text">—</span>
+                  <span id="item_3" class="readonly_text">—</span>
+                  <span id="item_6" class="readonly_text">—</span>
+                </div>
+              </div>
+
+              <div class="card weapons_card">
+                <div class="card_head">
+                  <div class="card_title">Waffen</div>
+                </div>
+
+                <div class="table weapons_table" role="table" aria-label="Waffen Tabelle">
+                  <div class="row head" role="row">
+                    <div class="cell" role="columnheader">Name</div>
+                    <div class="cell center" role="columnheader">aktiv</div>
+                    <div class="cell center" role="columnheader">Trefferbonus</div>
+                    <div class="cell" role="columnheader">Anmerkung</div>
+                    <div class="cell center" role="columnheader">Angriff</div>
+                  </div>
+
+                  <div class="row" role="row">
+                    <div class="cell"><span id="weapon1_name" class="readonly_text">—</span></div>
+                    <div class="cell center">
+                      <input id="weapon1_active" onchange="setWeaponActive(0)" class="active_checkbox" type="checkbox" />
+                    </div>
+                    <div class="cell center"><span id="weapon1_hitbonus" class="pill">+0</span></div>
+                    <div class="cell"><span id="weapon1_note" class="readonly_text">—</span></div>
+                    <div class="cell center"><span id="weapon1_attack" class="pill">0</span></div>
+                  </div>
+
+                  <div class="row" role="row">
+                    <div class="cell"><span id="weapon2_name" class="readonly_text">—</span></div>
+                    <div class="cell center">
+                      <input id="weapon2_active" onchange="setWeaponActive(1)" class="active_checkbox" type="checkbox" />
+                    </div>
+                    <div class="cell center"><span id="weapon2_hitbonus" class="pill">+0</span></div>
+                    <div class="cell"><span id="weapon2_note" class="readonly_text">—</span></div>
+                    <div class="cell center"><span id="weapon2_attack" class="pill">0</span></div>
+                  </div>
+
+                  <div class="row" role="row">
+                    <div class="cell"><span id="weapon3_name" class="readonly_text">—</span></div>
+                    <div class="cell center">
+                      <input id="weapon3_active" onchange="setWeaponActive(2)" class="active_checkbox" type="checkbox" />
+                    </div>
+                    <div class="cell center"><span id="weapon3_hitbonus" class="pill">+0</span></div>
+                    <div class="cell"><span id="weapon3_note" class="readonly_text">—</span></div>
+                    <div class="cell center"><span id="weapon3_attack" class="pill">0</span></div>
+                  </div>
+                </div>
+              </div>
+              <section class="action_panel">
+                <div id="choices" onclick="showStats()" class="choice_button">
+                  <button>Zurück</button>
+                </div>
+              </section>
+            </section>
+          </div>
+
+        </section>
+
+        <section id="battle_panel" class="battle_panel hidden">
+          <div class="battle_card">
+            <img class="battle_image" src="/static/images/guard.png" alt="Enemy png" />
+            <p id="battle_text" class="battle_text">Ein Gegner erscheint.</p>
+            <div id="battle_actions" class="action_panel">
+              <div id="battle_fight" class="choice_button" onclick="fight()">
+                <button>Angreifen</button>
+              </div>
+              <div id="battle_prey" class="choice_button" onclick="pray()">
+                <button>Beten</button>
+              </div>
+            </div>
           </div>
         </section>
       </main>

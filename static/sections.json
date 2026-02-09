@@ -1,5 +1,15 @@
 {
   "sections": {
+    "0": {
+      "text": "Welcome To The 'Reiter der Schwarzen Sonne'!\n\nAuthor: Swen Harder\nArtist: Fufu Frauenwahl\nProgrammer: Danil Kryvonosov",
+      "type": "linear",
+      "next_section": [
+        {
+          "number": "1",
+          "text": "Weiter lesen"
+        }
+      ]
+    },
     "1": {
       "text": "EIN SCHATTEN ERWACHT \n\n\"Argh! Mein Kopf... dieses Licht ... ist das der Tod?\"\n\nDein Geist ist verwirrt und es fällt dir schwer, dich zu erheben. Nur verschwommen erkennst du einen spärlich erleuchteten Raum. Das geheiligte Symbol der Göttin Kar ist allgegenwärtig. Überall erblickst du die achtflammige Sonne: geschnitzt ins Holz des Betthimmels, gewoben in die Seide der Wandteppiche und gegossen in Gold der Kunstwerke. Du bist im großzügig ausgestatteten Schlafgemach eines Sonnenpriesters. Draußen tobt ein heftiges Unwetter. Schwerer Regen peitscht gegen das Bleiglas und für einen Augenblick wird das Zimmer in grelles Weiß getaucht. Da kracht das Fenster zurück. Die Kerzen des Kandelabers auf dem Nachttisch verlöschen.\n\n\"Da ist jemand ... ein Schatten!\"\n\nDu schnellst herum. Niemand. Dein Herz rast. Unerwartet stürzt du über etwas auf dem Boden und erblickst den alten Körper eines Menschen, gehüllt in die ausladende, gold gelbe Schlafkutte eines Kar-Priesters. Seine wirren, aschgrauen Haare auf dem Hinterkopf sind von Blut durchtränkt. Er regt sich nicht.\n\n\"Ist er etwa tot!?\"\n\nÄhnlich den Gewitterblitzen draußen zucken dir Gedanken durch den Kopf: Du hast weder eine Ahnung, wo du dich befindest, wer vor dir liegt, noch ...\n\n\"Wer bin ICH?\"\n\nNur zögerlich und mit einer düsteren Vorahnung wandert dein Blick über das dunkle Gewand, das zerfetzt an deinem Körper herabhängt, und verharrt auf deinen zittrigen schwarzen Klauen: Blut! Das Blut des Mannes zu deinen Füßen!\n\n\"Oh, nein ... Was habe ich getan?\"\n\nDu willst nur fort von diesem Ort, fort von dieser Tat, als Schrittgeräusche an dein Ohr dringen.",
       "type": "linear",
@@ -45,7 +55,7 @@
       "type": "requirement",
       "next_section": {
         "text": "Hier wäre eine Öllaterne nützlich gewesen.",
-        "requirement": "Öllaterne",
+        "requirement": "lantern",
         "success": "56",
         "failure": "60"
       }
@@ -133,19 +143,7 @@
           "text": "Weiter lesen"
         }
       ],
-      "items": [
-        {
-          "name": "Öllaterne",
-          "text": "Öllaterne aufnehmen",
-          "typ": "utensil"
-        },
-        {
-          "name": "Schwert",
-          "text":"Schwert aufnehmen",
-          "typ": "waffe",
-          "power": 3
-        }
-      ]
+      "items": ["lantern", "sword"]
     },
     "46": {
       "text": "Vorsichtig tapst du voran. Unter deinen nackten Sohlen fühlst du den feuchten, schroffen Steinboden eines Kellergewölbes. Die Kühle dieses Ortes lässt dich erschaudern. Doch du hoffst, dass du hier vor deinen Verfolgern, die weiterhin durch den Park streifen, in Sicherheit zu sein. Nach und nach ertastest du die Umgebung und dir wird klar, dass du dich inmitten einer Krypta mit mehreren Steinsärgen befindest. Trotz der Angst, die Geister der Toten zu erzürnen, setzt du deine Suche fort und stolperst in einer abgelegenen Ecke über eine schwere Holztruhe mit Eisenbeschlägen. Ein Schloss gibt es nicht.",
@@ -346,18 +344,14 @@
       ]
     },
     "271": {
-      "text": "Du atmest tief ein und konzentrierst dich auf die Kraft deines Körpers. Dann zerrst du mit einem vor Anstrengung unterdrückten Schrei am Gitter. Teste deine STÄRKE gegen 14. Gelingt der Test, lies weiter bei 256. Misslingt er, lies weiter bei 105.",
-      "type": "choice",
-      "next_section": [
-        {
-          "number": "256",
-          "text": "Erfolg"
-        },
-        {
-          "number": "105",
-          "text": "Fehlschlag"
-        }
-      ]
+      "text": "Du atmest tief ein und konzentrierst dich auf die Kraft deines Körpers. Dann zerrst du mit einem vor Anstrengung unterdrückten Schrei am Gitter.",
+      "type": "check",
+      "next_section": {
+        "success": "256",
+        "fail": "105",
+        "ability": "strength",
+        "value": "14"
+      }
     },
     "292": {
       "text": "Das Gitter zeigt deutliche Rostflecken, macht dennoch einen robusten Eindruck. Ohne nachzudenken packst du eine der Querstangen und rüttelst. Fest. Nur eine Armlänge vom Gitter entfernt fließt Abwasser durch eine verkrustete Rinne im Steinboden. Auch aus deiner Zelle entspringt ein solches Rinnsal aus einem winzigen Loch.",

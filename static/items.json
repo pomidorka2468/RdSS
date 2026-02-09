@@ -1,0 +1,18 @@
+{
+    "items": {
+        "lantern": {
+            "name":"Öllaterne",
+            "type":"utensil",
+            "note":"leuchtet mit schwachem Licht",
+            "bonus":0,
+            "attack":0
+        },
+        "sword": {
+            "name":"Schwert",
+            "type":"weapon",
+            "note":"schwer und rostig",
+            "bonus":0,
+            "attack":3
+        }
+    }
+}

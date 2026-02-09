@@ -1,7 +1,6 @@
 ﻿:root {
   --cream: #f7f2e9;
   --paper: #fffaf2;
-  --peach: #ffe5c9;
   --coffee: #3b2f28;
   --accent: #f38b2d;
   --accent_dark: #d86e12;
@@ -110,4 +109,380 @@ body {
   font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
   font-size: 1.6rem;
   font-weight: 600;
+}
+
+.hidden {
+  display: none;
+}
+
+/*
+ * CHARACTER OVERVIEW
+ */
+
+.stats_panel {
+  margin-top: 1rem;
+}
+
+.battle_panel {
+  margin-top: 1rem;
+}
+
+.battle_card {
+  border: 1px solid var(--border);
+  background: var(--paper);
+  box-shadow: 0 8px 0 var(--shadow);
+  padding: 0.85rem;
+  display: grid;
+}
+
+.battle_image {
+  width: 80%;
+  height: 90%;
+  justify-self: center;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  display: block;
+}
+
+.battle_text {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.battle_actions {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.sheet {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.sheet_header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  align-items: end;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.sheet_title h2 {
+  margin: 0;
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
+}
+
+.sheet_subtitle {
+  margin-top: 0.2rem;
+  display: flex;
+  gap: 0.45rem;
+  align-items: baseline;
+}
+
+.label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.value {
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+
+.card {
+  border: 1px solid var(--border);
+  background: var(--paper);
+  box-shadow: 0 8px 0 var(--shadow);
+  padding: 0.75rem 0.85rem;
+}
+
+.card_head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.card_title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.card_hint {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: inline-block;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.sheet_top,
+.sheet_mid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 0.9rem;
+}
+
+.sheet_bottom {
+  display: grid;
+}
+
+@media (max-width: 1100px) {
+  .sheet_top,
+  .sheet_mid {
+    grid-template-columns: 1fr;
+  }
+
+  .sheet_header {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+/* Tracks: DISPLAY ONLY */
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 24px;
+  gap: 6px;
+  align-items: center;
+  overflow-x: auto;
+  padding: 0.15rem 0.05rem;
+}
+
+.track.compact {
+  grid-auto-columns: 20px;
+}
+
+.tick {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--coffee);
+  background: transparent;
+  display: inline-block;
+}
+
+.track.compact .tick {
+  width: 20px;
+  height: 20px;
+}
+
+.tick--on {
+  background:
+    linear-gradient(135deg, transparent 42%, var(--coffee) 43%, var(--coffee) 57%, transparent 58%),
+    linear-gradient(45deg, transparent 42%, var(--coffee) 43%, var(--coffee) 57%, transparent 58%);
+}
+
+
+/* Attributes */
+.attr_card {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.attr_grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.attr_block {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.attr_head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.attr_name {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.attr_value {
+  font-size: 1rem;
+  font-weight: 900;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+}
+
+/* Weapon table */
+.table {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1.2fr 90px 120px 1.5fr 110px;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.row.head {
+  font-weight: 800;
+  opacity: 0.85;
+  font-size: 0.9rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cell.center {
+  display: flex;
+  justify-content: center;
+}
+
+.readonly_text {
+  display: block;
+  padding: 0.1rem 0.1rem 0.2rem;
+  border-bottom: 1px solid var(--coffee);
+  min-height: 1.2em;
+}
+
+/* Only clickable inputs */
+.active_checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.pill {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 38px;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  font-weight: 900;
+}
+
+/* Armor */
+.armor_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.armor_card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.armor_item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.armor_label {
+  font-weight: 700;
+}
+
+.armor_totals {
+  display: grid;
+  margin-top: 0.1rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--border);
+}
+
+.total_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.total_label {
+  font-weight: 800;
+}
+
+/* Vitality + penalties: DISPLAY ONLY */
+.status_block {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 0.5rem;
+}
+
+.status_head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status_title {
+  font-weight: 900;
+  font-size: 0.95rem;
+}
+
+.status_meter {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.35rem;
+}
+
+.status_step {
+  border: 1px solid var(--coffee);
+  background: transparent;
+  padding: 0.25rem 0.3rem;
+  font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
+  font-weight: 700;
+  color: var(--coffee);
+  text-align: center;
+}
+
+.status_step--active {
+  background: var(--accent);
+}
+
+.penalties {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.penalty_chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 0.25rem 0.4rem;
+  font-weight: 800;
+}
+
+.penalty_text {
+  min-width: 28px;
+  text-align: center;
+}
+
+/* Items */
+.items_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 0.9rem;
 }
