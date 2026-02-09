@@ -96,6 +96,10 @@ class Player:
             "weapons": weapons
         }
 
+    def change_stat(self, stat, delta):
+        value = int(getattr(self, stat)) + int(delta)
+        setattr(self, stat, value)
+
     def set_weapon_active(self, index):
         if self.weapons[index]["active"] == True:
             self.weapons[index]["active"] = False
@@ -138,4 +142,3 @@ class Player:
     def attack(self):
         weapon_bonus = 3 #Use real bonus later
         return self.attack + weapon_bonus + random.randrange(1, 6, 1) + random.randrange(1, 6, 1)
-

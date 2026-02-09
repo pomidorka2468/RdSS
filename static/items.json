@@ -10,7 +10,7 @@
         "sword": {
             "name":"Schwert",
             "type":"weapon",
-            "note":"schwer und rostig",
+            "note":"Rostig",
             "bonus":0,
             "attack":3
         }

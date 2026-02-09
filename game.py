@@ -1,4 +1,5 @@
 import json
+import random
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -14,7 +15,6 @@ with Path("static/items.json").open(encoding="utf-8") as file:
 ITEMS_BY_NAME = {item["name"]: item for item in ITEMS.values()}
 
 player = Player()
-enemy = Enemy()
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -34,6 +34,8 @@ def get_next_sections(section_number: str):
     else :
         section_text = ""
 
+    section_func = section.get("func")
+
     if "items" in section:
         section_items = []
         for item_id in section["items"]:
@@ -43,16 +45,42 @@ def get_next_sections(section_number: str):
         section_items = []
 
     section_choices = []
-    if (section["type"] == "linear" or section["type"] == "choice"):
-        for choice in next_section:
-            section_choices.append({"number": choice["number"], "text": choice["text"]})
-    elif (section["type"] == "requirement"):
-        if (player.check_item(next_section["requirement"])):
-            section_choices.append({"number": next_section["success"], "text": next_section["text"]})
-        else:
-            section_choices.append({"number": next_section["failure"], "text": next_section["text"]})
+    match section["type"]:
+        case "linear":
+            for choice in next_section:
+                section_choices.append({"number": choice["number"], "text": choice["text"]})
+        case "choice":
+            for choice in next_section:
+                section_choices.append({"number": choice["number"], "text": choice["text"]})
+        case "requirement":
+            if player.check_item(next_section["requirement"]):
+                section_choices.append({"number": next_section["success"], "text": next_section["text"]})
+            else:
+                section_choices.append({"number": next_section["failure"], "text": next_section["text"]})
+        case "check":
+            result = getattr(player, next_section["ability"]) + random.randrange(1, 6, 1) + random.randrange(1, 6, 1)
+            if result >= next_section["value"]:
+                section_choices.append({"number": next_section["success"], "text": next_section["text"]})
+            else:
+                section_choices.append({"number": next_section["failure"], "text": next_section["text"]})
+        case "battle":
+            global enemy
+            enemy_data = section["enemy"]
+            
+            enemy = Enemy(
+                enemy_data["name"],
+                enemy_data["health"],
+                enemy_data["attack"],
+                enemy_data["defense"],
+                enemy_data["image_path"],
+            )
 
-    data = {"section_text":section_text, "items":section_items, "choices":section_choices}
+    data = {
+        "section_text":section_text,
+        "items":section_items,
+        "choices":section_choices,
+        "func": section_func
+    }
     return data
 
 @app.get("/pick_item")
@@ -79,11 +107,10 @@ def set_weapon_active(index: int):
 @app.get("/restart")
 def restart():
     player.restart()
-
-@app.get("/start_battle")
-def start_battle(name: str, health: int, attack: int, defense: int, image_path: str):
-    global enemy
-    enemy = Enemy(name, health, attack, defense, image_path)
+    
+@app.get("/change_player_stat")
+def change_player_stat(name: str, value: int):
+    player.change_stat(name, value)
 
 @app.get("/attack")
 def attack():

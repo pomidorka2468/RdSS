@@ -308,24 +308,15 @@
       "type": "linear",
       "next_section": [
         {
-          "number": "101",
-          "text": "Weiter lesen"
-        }
-      ]
-    },
-    "101": {
-      "text": "The End. Deine VITALITÄT ist normal. Trage dies nun auf dem Abenteuerblatt ein. Pochender Schmerz lässt dich unsanft erwachen. Dein kahler Schädel brummt und fauliges Stroh klebt dir auf den Lippen. Sämtliche Muskeln brennen, als du dich vom Steinboden erhebst. Du bist in einer feuchten Kerkerzelle. Durch das Eisengitter tanzt spärlicher Fackelschein. Allmählich kriechen die Geschehnisse der vergangenen Nacht wieder in deine Erinnerung: die Leiche des Hierarchen, deine Flucht in die idyllische Kapelle, der mysteriöse Schatten, der dich verfolgte, um dich hierher zu verschleppen, und natürlich die liebreizende Kar-Priesterin, die du erblicken durftest, bevor die Zeit einfror. Die Erinnerung an sie entflammt dein Herz. Du musterst die schwarze Haut deines Körpers - den man in ein fleckiges Baumwollgewand gesteckt hat — auf Verletzungen oder sonstige Spuren, die einen Hinweis auf deine Entführung geben könnten, entdeckst aber nichts Außergewöhnliches. Wie viele Stunden du ohnmächtig warst, kannst du nicht sagen. In diesem trostlosen Gefängnis gibt es keinen Hinweis darauf, ob der Mond strahlt oder die Sonne brennt. Gewissenhaft tastest du dich ab und durchwühlst das Stroh —- von deinen Habseligkeiten keine Spur. Man hat dir deinen ganzen Besitz (Utensilien, Besondere Gegenstände, Waffen, Kleidung) abgenommen. Markiere daher alle verlorenen Gegenstände mit einem Kreuz im Speicherpunkt, es sei denn, er ist bereits markiert. Vielleicht bekommst du sie zu einem späteren Zeitpunkt wieder. Das Einzige, was du derzeit am Leibe trägst, ist ein Gefangenengewand (Kleidung, Umhang). Vermerke alle Änderungen jetzt auf dem Abenteuerblatt.",
-      "type": "linear",
-      "next_section": [
-        {
           "number": "292",
           "text": "Weiter lesen"
         }
       ]
     },
     "105": {
-      "text": "Vor lauter Anstrengung wird dir schwarz vor Augen, doch der Gedanke daran, in diesem Verlies zu verrotten, setzt übermenschliche Kraft in dir frei. Mit einem lauten Schlag zerspringen die Mauersteine und du hältst das Gitter samt Verankerung in Händen. Dir ist klar, dass der ohrenbetäubende Lärm im ganzen Gefängnis zu hören war. Daher bereitest du dich auf ungebetenen Besuch vor. Deine VITALITÄT sinkt um eine Stufe! Lies weiter im Kampfkapitel bei K1!",
+      "text": "Vor lauter Anstrengung wird dir schwarz vor Augen, doch der Gedanke daran, in diesem Verlies zu verrotten, setzt übermenschliche Kraft in dir frei. Mit einem lauten Schlag zerspringen die Mauersteine und du hältst das Gitter samt Verankerung in Händen. Dir ist klar, dass der ohrenbetäubende Lärm im ganzen Gefängnis zu hören war. Daher bereitest du dich auf ungebetenen Besuch vor. Deine VITALITÄT sinkt um eine Stufe!",
       "type": "linear",
+      "func": "change_player_stat()?name=health&value=-1",
       "next_section": [
         {
           "number": "K1",
@@ -348,9 +339,10 @@
       "type": "check",
       "next_section": {
         "success": "256",
-        "fail": "105",
+        "failure": "105",
         "ability": "strength",
-        "value": "14"
+        "value": 4,
+        "text": "Lets see if you are strong enough"
       }
     },
     "292": {
@@ -378,22 +370,36 @@
       ]
     },
     "K8": {
-      "text": "Die schwarzen Augen im wildschweinartigen Schädel des Gartak weiten sich, als du ihn zu einem offenen Zweikampf zwingst. Mach dich bereit zum Angriff auf den Gefängniswärter!\n\n\n\nGARTAK, GEFÄNGNISWÄRTER\n\nAngriff: 11\n\nVerteidigung: 10\n\nResistenz: 2",
-      "type": "linear",
+      "text": "Die schwarzen Augen im wildschweinartigen Schädel des Gartak weiten sich, als du ihn zu einem offenen Zweikampf zwingst. Mach dich bereit zum Angriff auf den Gefängniswärter!",
+      "type": "battle",
+      "enemy": {
+        "name":"GARTAK, GEFÄNGNISWÄRTER",
+        "health":2,
+        "attack":11,
+        "defense":10,
+        "image_path":"static/image/guard.png"
+      },
       "next_section": [
         {
-          "number": "0",
-          "text": "Weiter lesen"
+          "number": "999",
+          "text": "You have won the Gartak, the Prison Guard"
         }
       ]
     },
     "K59": {
-      "text": "Mit nur einem Satz springst du dem Wärter in den Rücken. Der Gartak ist vollkommen überrascht und nicht in der Lage sich gekonnt zu verteidigen.\n\n\n\nGARTAK, GEFÄNGNISWÄRTER (ÜBERRASCHT)\n\nAngriff: 10\n\nVerteidigung: 10\n\nResistenz: 2",
-      "type": "linear",
+      "text": "Mit nur einem Satz springst du dem Wärter in den Rücken. Der Gartak ist vollkommen überrascht und nicht in der Lage sich gekonnt zu verteidigen.",
+      "type": "battle",
+      "enemy": {
+        "name":"GARTAK, GEFÄNGNISWÄRTER (ÜBERRASCHT)",
+        "health":2,
+        "attack":10,
+        "defense":10,
+        "image_path":"static/image/guard.png"
+      },
       "next_section": [
         {
-          "number": "0",
-          "text": "Weiter lesen"
+          "number": "999",
+          "text": "You have won the Gartak, the Prison Guard"
         }
       ]
     }

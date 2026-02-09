@@ -23,12 +23,16 @@ async function loadSection(section_number){
   statusText.textContent = "Sektion " + section_number;
   storyActions.replaceChildren();
 
+  if (data["func"]) {
+    await fetch(`/${data["func"]}`);
+  }
+
   if (Array.isArray(data["items"]) && data["items"].length > 0) {
     data["items"].forEach(item => {
       itemButton = createButton(
         `item_${item.name}`, 
         item.name, 
-        `pickItem(${item.id})`
+        () => pickItem(item.name)
       );
       storyActions.appendChild(itemButton);
     });
@@ -39,7 +43,7 @@ async function loadSection(section_number){
       choiceButton = createButton(
         `item_${choice["number"]}`, 
         choice["text"], 
-        `loadSection(${choice["number"]})`
+        () => loadSection(choice["number"])
       );
       storyActions.appendChild(choiceButton);
     });
@@ -163,76 +167,74 @@ async function restart() {
   updateStats();
 }
 
+async function start_battle() {
+  inBattle = true;
+  stroyPanel.classList.add("hidden");
+  battlePanel.classList.remove("hidden");
+
+  await fetch(`/create_enemy?name=${name}&health=${health}&attack=${attack_value}&defense=${defense}&image_path=${image_path}&`);
+
+}
+
 async function attack(){
   const battleText = document.getElementById("battle_text");
   const battleActions = document.getElementById("battle_actions");
 
-
   res = await fetch(`/attack`);
   battleText.value = res;
-
 
   defendButton = createButton(
     "defend",
     "Enemy tries to attack you",
-    "defend()"
+    () => defend()
   );
   battleActions.replaceChildren(defendButton);
 }
-
 
 async function pray(){
   const battleText = document.getElementById("battle_text");
   const battleActions = document.getElementById("battle_actions");
 
-
   res = await fetch(`/attack`);
   battleText.value = res;
-
 
   defendButton = createButton(
     "defend",
     "Enemy tries to attack you",
-    "defend()"
+    () => defend()
   );
   battleActions.replaceChildren(defendButton);
 }
-
 
 async function defend(){
   const battleText = document.getElementById("battle_text");
   const battleActions = document.getElementById("battle_actions");
 
-
   res = await fetch(`/defend`);
   battleText.value = res;
-
 
   attackButton = createButton(
     "attack",
     "Attack the enemy",
-    "attack()"
+    () => attack()
   );
   prayButton = createButton(
     "pray",
     "Pray to the God",
-    "pray()"
+    () => pray()
   );
   battleActions.replaceChildren(attackButton, prayButton);
 }
 
-
-function createButton(name, text, func) {
+function createButton(name, text, onClick) {
   wrapper = document.createElement("div");
   wrapper.id = `btn_${name}`;
-  wrapper.className = "button";
-  wrapper.onclick = () => func;
-
+  wrapper.className = "choice_button";
+  wrapper.onclick = onClick;
 
   button = document.createElement("button");
   button.textContent = text;
   wrapper.appendChild(button);
-
 
   return wrapper;
 }
