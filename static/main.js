@@ -10,6 +10,7 @@ const storyActions = document.getElementById("story_actions");
 const battleActions = document.getElementById("battle_actions");
 
 inBattle = false;
+let battleNextSection = null;
 
 (function init() {
   loadSection(0);
@@ -25,6 +26,12 @@ async function loadSection(section_number){
 
   if (data["func"]) {
     await fetch(`/${data["func"]}`);
+  }
+
+  if (data["type"] === "battle") {
+    battleNextSection = data["next_section"] ?? null;
+    startBattle(data["enemy"], data["section_text"]);
+    return;
   }
 
   if (Array.isArray(data["items"]) && data["items"].length > 0) {
@@ -87,10 +94,21 @@ async function updateStats(){
   const data = await res.json();
   const items = data.items;
   const weapons = data.weapons;
-  const armor = data.armor;
+
+  health_map = {
+    0: "tot",
+    1: "kritisch",
+    2: "verletzt",
+    3: "angeschlagen",
+    4: "normal",
+    5: "fit"
+  };
+
+  health = data["health"];
+  health_text = health_map[health];
 
   const healthbarElement = document.getElementById(`vitality_meter`);
-  const healthElement = document.getElementById(`vit_${data["health"]}`);
+  const healthElement = document.getElementById(`vit_${health_text}`);
   const penalty1Element = document.getElementById(`penalty_chip_minus_1`);
   const penalty2Element = document.getElementById(`penalty_chip_minus_2`);
   
@@ -101,12 +119,12 @@ async function updateStats(){
     healthElement.classList.add("status_step--active");
   }
 
-  penalty1Element.classList.remove("active");
-  penalty2Element.classList.remove("active");
-  if (data["health"] === "verletzt") {
-    penalty1Element.classList.add("active");
-  } else if (data["health"] === "kritisch") {
-    penalty2Element.classList.add("active");
+  penalty1Element.classList.remove("active_penalty");
+  penalty2Element.classList.remove("active_penalty");
+  if (health_text === "verletzt") {
+    penalty1Element.classList.add("active_penalty");
+  } else if (health_text === "kritisch") {
+    penalty2Element.classList.add("active_penalty");
   }
 
   
@@ -167,25 +185,49 @@ async function restart() {
   updateStats();
 }
 
-async function start_battle() {
+function startBattle(enemy, text) {
   inBattle = true;
   stroyPanel.classList.add("hidden");
   battlePanel.classList.remove("hidden");
 
-  await fetch(`/create_enemy?name=${name}&health=${health}&attack=${attack_value}&defense=${defense}&image_path=${image_path}&`);
+  if (text) {
+    battleText.textContent = text;
+  }
 
+  const attackButton = createButton(
+    "attack",
+    "Gegner angreifen",
+    () => attack()
+  );
+  const prayButton = createButton(
+    "pray",
+    "Zu Gott beten",
+    () => pray()
+  );
+  battleActions.replaceChildren(attackButton, prayButton);
 }
 
 async function attack(){
   const battleText = document.getElementById("battle_text");
   const battleActions = document.getElementById("battle_actions");
 
-  res = await fetch(`/attack`);
-  battleText.value = res;
+  const res = await fetch(`/attack`);
+  const result = await res.json();
+  battleText.textContent = result.text;
+
+  if (result.status === "dead") {
+    const continueButton = createButton(
+      "continue",
+      "Weiter lesen",
+      () => battleEnd()
+    );
+    battleActions.replaceChildren(continueButton);
+    return;
+  }
 
   defendButton = createButton(
     "defend",
-    "Enemy tries to attack you",
+    "Der Gegner greift an",
     () => defend()
   );
   battleActions.replaceChildren(defendButton);
@@ -195,12 +237,13 @@ async function pray(){
   const battleText = document.getElementById("battle_text");
   const battleActions = document.getElementById("battle_actions");
 
-  res = await fetch(`/attack`);
-  battleText.value = res;
+  const res = await fetch(`/pray`);
+  const resultText = await res.text();
+  battleText.textContent = resultText;
 
   defendButton = createButton(
     "defend",
-    "Enemy tries to attack you",
+    "Der Gegner greift an",
     () => defend()
   );
   battleActions.replaceChildren(defendButton);
@@ -210,20 +253,34 @@ async function defend(){
   const battleText = document.getElementById("battle_text");
   const battleActions = document.getElementById("battle_actions");
 
-  res = await fetch(`/defend`);
-  battleText.value = res;
+  const res = await fetch(`/defend`);
+  const resultText = await res.text();
+  battleText.textContent = resultText;
 
   attackButton = createButton(
     "attack",
-    "Attack the enemy",
+    "Gegner angreifen",
     () => attack()
   );
   prayButton = createButton(
     "pray",
-    "Pray to the God",
+    "Zu Gott beten",
     () => pray()
   );
   battleActions.replaceChildren(attackButton, prayButton);
+}
+
+function fight() {
+  attack();
+}
+
+function battleEnd() {
+  inBattle = false;
+  battlePanel.classList.add("hidden");
+  stroyPanel.classList.remove("hidden");
+  if (battleNextSection !== null && battleNextSection !== undefined) {
+    loadSection(battleNextSection);
+  }
 }
 
 function createButton(name, text, onClick) {

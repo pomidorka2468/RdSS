@@ -35,6 +35,9 @@ def get_next_sections(section_number: str):
         section_text = ""
 
     section_func = section.get("func")
+    section_type = section.get("type")
+    enemy_payload = None
+    next_section_value = None
 
     if "items" in section:
         section_items = []
@@ -58,7 +61,12 @@ def get_next_sections(section_number: str):
             else:
                 section_choices.append({"number": next_section["failure"], "text": next_section["text"]})
         case "check":
-            result = getattr(player, next_section["ability"]) + random.randrange(1, 6, 1) + random.randrange(1, 6, 1)
+            result = (
+                getattr(player, next_section["ability"])
+                + random.randrange(1, 6, 1)
+                + random.randrange(1, 6, 1)
+                - player.get_penalty()
+            )
             if result >= next_section["value"]:
                 section_choices.append({"number": next_section["success"], "text": next_section["text"]})
             else:
@@ -72,14 +80,19 @@ def get_next_sections(section_number: str):
                 enemy_data["health"],
                 enemy_data["attack"],
                 enemy_data["defense"],
-                enemy_data["image_path"],
             )
+            enemy_payload = enemy_data
+            if isinstance(next_section, list) and len(next_section) > 0:
+                next_section_value = next_section[0].get("number")
 
     data = {
         "section_text":section_text,
         "items":section_items,
         "choices":section_choices,
-        "func": section_func
+        "func": section_func,
+        "type": section_type,
+        "enemy": enemy_payload,
+        "next_section": next_section_value
     }
     return data
 
@@ -114,32 +127,40 @@ def change_player_stat(name: str, value: int):
 
 @app.get("/attack")
 def attack():
-    damage = player.attack()
+    damage = player.get_attack()
     res = enemy.take_damage(damage)
     match res:
         case "missed":
-            return "You have missed, enemy doesn't take any damage"
+            return {
+                "status": "missed",
+                "text": "Du hast verfehlt, der Gegner erleidet keinen Schaden."
+            }
         case "wounded":
-            return f"You have successfully hit. Enemy health: {enemy.health}"
+            return {
+                "status": "wounded",
+                "text": f"Treffer! Gegnerische Lebenspunkte: {enemy.health}"
+            }
         case "dead":
-           
-            return f"You have defeated the Enemy. Yay"
+            return {
+                "status": "dead",
+                "text": "Du hast den Gegner besiegt."
+            }
        
 @app.get("/defend")
 def take_damage():
     res = player.take_damage(enemy.attack)
     match res:
         case "missed":
-            return "Enemy has missed"
+            return "Der Gegner hat verfehlt."
         case "wounded":
-            return f"Enemy hit you. Your status is {player.health_map[player.health]}"
+            return f"Der Gegner hat dich getroffen. Dein Zustand ist {player.health_map[player.health]}"
         case "dead":
-            return "You are dead. Git Gud"
+            return "Du bist tot."
        
 @app.get("/pray")
 def pray():
     res = player.take_damage(999999)
     if res == "dead":
-        return f"God didn't answer your prayers. Enemy used an opening and stroke a critical hit your status is {player.health_map[player.health]}"
+        return f"Gott hat dein Gebet nicht erhört. Der Gegner nutzte die Öffnung und traf kritisch. Dein Zustand ist {player.health_map[player.health]}"
     else:
-        return f"God didn't answer your prayers. Enemy used an opening and finished you. Git Gud"
+        return "Gott hat dein Gebet nicht erhört. Der Gegner nutzte die Öffnung und hat dich erledigt."

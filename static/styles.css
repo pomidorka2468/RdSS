@@ -366,6 +366,11 @@ body {
   cursor: pointer;
 }
 
+.active_penalty {
+  background: #f38b2d !important;
+  border-color: #3b2f28 !important;
+}
+
 .pill {
   display: inline-flex;
   justify-content: center;

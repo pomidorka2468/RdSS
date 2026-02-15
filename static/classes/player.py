@@ -19,7 +19,6 @@ class Player:
         
         self.inventory = []
         self.weapons = []
-        #ToDo Armor
 
     def pick_item(self, item_id, name, type, description, bonus, strength):
         if type == "weapon":
@@ -128,7 +127,7 @@ class Player:
         self.weapons = []
 
     def take_damage(self, damage):
-        cur_defense = self.defense + random.randrange(1, 6, 1) + random.randrange(1, 6, 1)
+        cur_defense = self.defense + random.randrange(1, 6, 1) + random.randrange(1, 6, 1) - self.get_penalty()
         if cur_defense >= damage:
             return "missed"
         else:
@@ -138,7 +137,17 @@ class Player:
             else:
                 return "dead"
 
+    def get_penalty(self):
+        if self.health == 1:
+            return 2
+        elif self.health == 2:
+            return 1
+        return 0
 
-    def attack(self):
-        weapon_bonus = 3 #Use real bonus later
-        return self.attack + weapon_bonus + random.randrange(1, 6, 1) + random.randrange(1, 6, 1)
+    def get_attack(self):
+        active_weapon_attack = 0
+        for weapon in self.weapons:
+            if weapon.get("active") == True:
+                active_weapon_attack += int(weapon.get("attack", 0))
+
+        return self.attack + active_weapon_attack + random.randrange(1, 6, 1) + random.randrange(1, 6, 1) - self.get_penalty()
